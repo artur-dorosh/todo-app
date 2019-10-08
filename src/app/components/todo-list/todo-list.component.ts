@@ -1,111 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Todo} from '../../interfaces/todo';
+import {TodoService} from '../../services/todo.service';
 
 @Component({
   selector: 'todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss']
+  styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[];
-  todoTitle: string;
-  idForTodo: number;
   beforeEditCache: string;
+  idForTodo: number;
+  todoTitle: string;
   filter: string;
 
-  constructor() { }
+  constructor(private todoService: TodoService) {
+  }
 
   ngOnInit() {
-    this.filter = 'all';
-    this.beforeEditCache = '';
-    this.idForTodo = 4;
-    this.todoTitle = '';
-    this.todos = [
-      {
-        'id': 1,
-        'title': 'Finish Angular Screencast',
-        'completed': false,
-        'editing': false,
-      },
-      {
-        'id': 2,
-        'title': 'Take over world',
-        'completed': false,
-        'editing': false,
-      },
-      {
-        'id': 3,
-        'title': 'One more thing',
-        'completed': false,
-        'editing': false,
-      },
-    ];
+    this.beforeEditCache = this.todoService.beforeEditCache;
+    this.idForTodo = this.todoService.idForTodo;
+    this.todoTitle = this.todoService.todoTitle;
+    this.filter = this.todoService.filter;
+    this.todos = this.todoService.todos;
   }
 
   addTodo(): void {
-    if (!this.todoTitle) {
-      return;
-    }
-
-    this.todos.push({
-      id: this.idForTodo,
-      title: this.todoTitle,
-      completed: false,
-      editing: false
-    });
-
-    this.idForTodo++;
+    this.todoService.addTodo(this.todoTitle);
     this.todoTitle = '';
   }
 
   editTodo(todo: Todo): void {
-    this.beforeEditCache = todo.title;
-    todo.editing = true;
+    this.todoService.editTodo(todo);
   }
 
   doneEdit(todo: Todo): void {
-    if (!todo.title) {
-      todo.title = this.beforeEditCache;
-    }
-
-    todo.editing = false;
+    this.todoService.doneEdit(todo);
   }
 
   cancelEdit(todo: Todo): void {
-    todo.title = this.beforeEditCache;
-    todo.editing = false;
+    this.todoService.cancelEdit(todo);
   }
 
   deleteTodo(id: number): void {
-    this.todos = this.todos.filter(item => item.id !== id);
-    this.idForTodo--;
+    this.todoService.deleteTodo(id);
   }
 
   remaining(): number {
-    return this.todos.filter(item => !item.completed).length;
+    return this.todoService.remaining();
   }
 
   atLeastOneCompleted(): boolean {
-    return this.todos.filter(item => item.completed).length > 0;
+    return this.todoService.atLeastOneCompleted();
   }
 
   clearCompleted(): void {
-    this.todos = this.todos.filter(item => !item.completed);
+    this.todoService.clearCompleted();
   }
 
   checkAllTodos(): void {
-    this.todos.forEach(item => item.completed = (<HTMLInputElement> event.target).checked);
+    this.todoService.checkAllTodos();
   }
 
   todosFiltered(): Todo[] {
-    if (this.filter === 'all') {
-      return this.todos;
-    } else if (this.filter === 'active') {
-      return this.todos.filter(item => !item.completed);
-    } else if (this.filter === 'completed') {
-      return this.todos.filter(item => item.completed);
-    }
-
-    return this.todos;
+    return this.todoService.todosFiltered(this.filter);
   }
 }
