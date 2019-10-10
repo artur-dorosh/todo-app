@@ -1,5 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Todo} from '../../interfaces/todo';
+import { Component, OnInit} from '@angular/core';
 import {TodoService} from '../../services/todo.service';
 
 @Component({
@@ -8,42 +7,12 @@ import {TodoService} from '../../services/todo.service';
   styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent implements OnInit {
-  todos: Todo[];
-  beforeEditCache: string;
-  idForTodo: number;
-  todoTitle: string;
-  filter: string;
+  public filter = 'all';
 
   constructor(private todoService: TodoService) {
   }
 
   ngOnInit() {
-    this.beforeEditCache = this.todoService.beforeEditCache;
-    this.idForTodo = this.todoService.idForTodo;
-    this.todoTitle = this.todoService.todoTitle;
-    this.filter = this.todoService.filter;
-    this.todos = this.todoService.todos;
-  }
-
-  addTodo(): void {
-    this.todoService.addTodo(this.todoTitle);
-    this.todoTitle = '';
-  }
-
-  editTodo(todo: Todo): void {
-    this.todoService.editTodo(todo);
-  }
-
-  doneEdit(todo: Todo): void {
-    this.todoService.doneEdit(todo);
-  }
-
-  cancelEdit(todo: Todo): void {
-    this.todoService.cancelEdit(todo);
-  }
-
-  deleteTodo(id: number): void {
-    this.todoService.deleteTodo(id);
   }
 
   remaining(): number {
@@ -60,9 +29,5 @@ export class TodoListComponent implements OnInit {
 
   checkAllTodos(): void {
     this.todoService.checkAllTodos();
-  }
-
-  todosFiltered(): Todo[] {
-    return this.todoService.todosFiltered(this.filter);
   }
 }

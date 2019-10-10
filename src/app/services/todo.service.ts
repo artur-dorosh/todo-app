@@ -1,21 +1,18 @@
-import {Injectable, OnInit} from '@angular/core';
-import {Todo} from '../interfaces/todo';
-import {TodoListComponent} from '../components/todo-list/todo-list.component';
+import { Injectable } from '@angular/core';
+import { Todo } from '../interfaces/todo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  public filter = 'all';
   public beforeEditCache = '';
   public idForTodo = 1;
-  public todoTitle = '';
-  public todos = [];
+  private todos = [];
 
   constructor() {
   }
 
-  addTodo(text): void {
+  addTodo(text): Todo[] {
     if (!text) {
       return;
     }
@@ -28,29 +25,46 @@ export class TodoService {
     });
 
     this.idForTodo++;
+    return this.todos;
   }
 
   editTodo(todo: Todo): void {
     this.beforeEditCache = todo.title;
-    todo.editing = true;
+    const result = {...todo};
+    result.editing = true;
+    for (let i = 0; i < this.todos.length; i++) {
+      if (this.todos[i].id === result.id) {
+        this.todos[i] = result;
+      }
+    }
   }
 
   doneEdit(todo: Todo): void {
     if (!todo.title) {
       todo.title = this.beforeEditCache;
     }
-
-    todo.editing = false;
+    const result = {...todo};
+    result.editing = false;
+    for (let i = 0; i < this.todos.length; i++) {
+      if (this.todos[i].id === result.id) {
+        this.todos[i] = result;
+      }
+    }
   }
 
   cancelEdit(todo: Todo): void {
     todo.title = this.beforeEditCache;
-    todo.editing = false;
+    const result = {...todo};
+    result.editing = false;
+    for (let i = 0; i < this.todos.length; i++) {
+      if (this.todos[i].id === result.id) {
+        this.todos[i] = result;
+      }
+    }
   }
 
   deleteTodo(id: number): void {
     this.todos = this.todos.filter(item => item.id !== id);
-    this.idForTodo--;
   }
 
   remaining(): number {
