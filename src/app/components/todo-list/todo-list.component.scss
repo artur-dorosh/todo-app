@@ -1,3 +1,14 @@
+.todo-input {
+  width: 100%;
+  padding: 10px 18px;
+  font-size: 18px;
+  margin-bottom: 16px;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
 .extra-container {
   display: flex;
   align-items: center;

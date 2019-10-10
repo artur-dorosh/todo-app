@@ -12,6 +12,10 @@ export class TodoService {
   constructor() {
   }
 
+  get data() {
+    return this.todos;
+  }
+
   addTodo(text): Todo[] {
     if (!text) {
       return;

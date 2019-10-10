@@ -1,6 +1,4 @@
-<input type="text" class="todo-input" placeholder="What needs to be done" [(ngModel)]="todoTitle" (keyup.enter)="addTodo()">
-
-<div class="todo-item" *ngFor="let item of todosFiltered()">
+<div class="todo-item" *ngFor="let item of todos">
   <div class="todo-item-left">
     <input type="checkbox" [(ngModel)]="item.completed">
     <div *ngIf="!item.editing; else editingTodo" class="todo-item-label" [ngClass]="{ 'completed': item.completed }" (dblclick)="editTodo(item)">{{ item.title }}</div>
@@ -8,7 +6,8 @@
       <input type="text" class="todo-item-edit" [(ngModel)]="item.title" (blur)="doneEdit(item)" (keyup.enter)="doneEdit(item)" (keydown.escape)="cancelEdit(item)">
     </ng-template>
   </div>
-  <div class="remove-item" (click)="deleteTodo(item.id)">
+  <div class="remove-item" (click)="onTraxa(item.id)">
     &times;
   </div>
 </div>
+

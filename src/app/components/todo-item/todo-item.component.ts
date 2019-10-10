@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Todo} from '../../interfaces/todo';
-import {TodoService} from '../../services/todo.service';
-import {TodoListComponent} from '../todo-list/todo-list.component';
 
 @Component({
   selector: 'app-todo-item',
@@ -9,37 +7,16 @@ import {TodoListComponent} from '../todo-list/todo-list.component';
   styleUrls: ['./todo-item.component.scss']
 })
 export class TodoItemComponent implements OnInit {
-  todoTitle = '';
-  filter: string;
+  @Input() todos: Todo[];
+  @Output() traxa = new EventEmitter();
 
-  constructor(private todoService: TodoService, private todoListComponent: TodoListComponent) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
-  addTodo(): void {
-    this.todoService.addTodo(this.todoTitle);
-    this.todoTitle = '';
+  onTraxa() {
+    this.traxa.emit(this.todos);
   }
 
-  editTodo(todo: Todo): void {
-    this.todoService.editTodo(todo);
-  }
-
-  doneEdit(todo: Todo): void {
-    this.todoService.doneEdit(todo);
-  }
-
-  cancelEdit(todo: Todo): void {
-    this.todoService.cancelEdit(todo);
-  }
-
-  deleteTodo(id: number): void {
-    this.todoService.deleteTodo(id);
-  }
-
-  todosFiltered(): Todo[] {
-    this.filter = this.todoListComponent.filter;
-    return this.todoService.todosFiltered(this.filter);
-  }
 }
