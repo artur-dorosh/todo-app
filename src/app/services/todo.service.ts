@@ -7,6 +7,7 @@ import { Todo } from '../interfaces/todo';
 export class TodoService {
   public beforeEditCache = '';
   public idForTodo = 1;
+  public filter = 'all';
   private todos = [];
 
   constructor() {

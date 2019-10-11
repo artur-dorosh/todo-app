@@ -8,15 +8,29 @@ import {Todo} from '../../interfaces/todo';
 })
 export class TodoItemComponent implements OnInit {
   @Input() todos: Todo[];
-  @Output() traxa = new EventEmitter();
+  @Output() editTodo = new EventEmitter<Todo>();
+  @Output() doneEdit = new EventEmitter<Todo>();
+  @Output() cancelEdit = new EventEmitter<Todo>();
+  @Output() deleteTodo = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onTraxa() {
-    this.traxa.emit(this.todos);
+  toEditTodo(value) {
+    this.editTodo.emit(value);
   }
 
+  toConfirmEdit(value) {
+    this.doneEdit.emit(value);
+  }
+
+  toCancelEdit(value) {
+    this.cancelEdit.emit(value);
+  }
+
+  toDeleteTodo(id) {
+    this.deleteTodo.emit(id);
+  }
 }
