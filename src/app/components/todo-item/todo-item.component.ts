@@ -7,7 +7,7 @@ import {Todo} from '../../interfaces/todo';
   styleUrls: ['./todo-item.component.scss']
 })
 export class TodoItemComponent implements OnInit {
-  @Input() todos: Todo[];
+  @Input() item: Todo;
   @Output() editTodo = new EventEmitter<Todo>();
   @Output() doneEdit = new EventEmitter<Todo>();
   @Output() cancelEdit = new EventEmitter<Todo>();

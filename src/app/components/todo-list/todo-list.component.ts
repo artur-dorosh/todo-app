@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import {TodoService} from '../../services/todo.service';
 import {Todo} from '../../interfaces/todo';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'todo-list',

@@ -1,4 +1,4 @@
-<div class="todo-item" *ngFor="let item of todos">
+<div class="flex">
   <div class="todo-item-left">
     <input type="checkbox" [(ngModel)]="item.completed">
     <div *ngIf="!item.editing; else editingTodo" class="todo-item-label" [ngClass]="{ 'completed': item.completed }" (dblclick)="toEditTodo(item)">{{ item.title }}</div>
@@ -10,4 +10,3 @@
     &times;
   </div>
 </div>
-
