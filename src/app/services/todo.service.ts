@@ -1,40 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../interfaces/todo';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
   public beforeEditCache = '';
-  public idForTodo = 3;
-  private url = 'http://localhost:4200/todos';
-  private todos: any = this.http.get(this.url).subscribe(data => {
-    this.todos = data;
-  });
+  public idForTodo = 1;
+  private todos = [];
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
   addTodo(text): Todo[] {
     if (!text) {
       return;
     }
-
-    this.http.post(this.url, {
-      id: this.idForTodo,
-      title: text,
-      completed: false,
-      editing: false
-    }).subscribe();
-
-    this.todos.push({
-      id: this.idForTodo,
-      title: text,
-      completed: false,
-      editing: false
-    });
 
     this.idForTodo++;
     return this.todos;
