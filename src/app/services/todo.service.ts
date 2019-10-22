@@ -13,15 +13,6 @@ export class TodoService {
   constructor() {
   }
 
-  addTodo(text): Todo[] {
-    if (!text) {
-      return;
-    }
-
-    this.idForTodo++;
-    return this.todos;
-  }
-
   editTodo(todo: Todo): void {
     this.beforeEditCache = todo.title;
     const result = {...todo};
