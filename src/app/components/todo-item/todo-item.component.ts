@@ -13,19 +13,19 @@ export class TodoItemComponent {
   @Output() cancelEdit = new EventEmitter<Todo>();
   @Output() deleteTodo = new EventEmitter<number>();
 
-  toEditTodo(value) {
+  toEditTodo(value: Todo): void {
     this.editTodo.emit(value);
   }
 
-  toConfirmEdit(value) {
+  toConfirmEdit(value: Todo): void {
     this.doneEdit.emit(value);
   }
 
-  toCancelEdit(value) {
+  toCancelEdit(value: Todo): void {
     this.cancelEdit.emit(value);
   }
 
-  toDeleteTodo(id) {
+  toDeleteTodo(id: number): void {
     this.deleteTodo.emit(id);
   }
 }

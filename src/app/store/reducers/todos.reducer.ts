@@ -1,36 +1,28 @@
 import {Todo} from '../../interfaces/todo';
 import * as todos from '../actions/todos.action';
 
-let counter = 1;
-let cache = '';
-
 export const todosReducer = (state: Todo[] = [], action) => {
   switch (action.type) {
-    case todos.ADD_TODO:
-      if (!action.payload) {
-        return state;
-      }
+    case todos.LOADED_DATA:
+      return action.payload;
 
+    case todos.ADD_TODO:
       return [
         ...state,
         {
           title: action.payload,
-          id: counter++,
+          id: state.length + 1,
           completed: false,
           editing: false
         }
       ];
 
     case todos.EDIT_TODO:
-      cache = action.payload.title;
       state = state.map(item => {
-        if (item.id === action.payload.id) {
-           return {
-             ...item,
-             editing: true
-           };
-        }
-        return {
+        return item.id === action.payload.id ? {
+          ...item,
+          editing: true
+        } : {
           ...item
         };
       });
@@ -38,31 +30,11 @@ export const todosReducer = (state: Todo[] = [], action) => {
       return state;
 
     case todos.DONE_EDIT_TODO:
-      if (!action.payload.title) {
-        state = state.map(item => {
-          if (item.id === action.payload.id) {
-            return {
-              ...item,
-              title: cache,
-              editing: false
-            };
-          }
-          return {
-            ...item
-          };
-        });
-
-        return state;
-      }
-
       state = state.map(item => {
-        if (item.id === action.payload.id) {
-          return {
-            ...item,
-            editing: false
-          };
-        }
-        return {
+        return item.id === action.payload.id ? {
+          ...item,
+          editing: false
+        } : {
           ...item
         };
       });
@@ -71,14 +43,12 @@ export const todosReducer = (state: Todo[] = [], action) => {
 
     case todos.CANCEL_EDIT_TODO:
       state = state.map(item => {
-        if (item.id === action.payload.id) {
-          return {
-            ...item,
-            title: cache,
-            editing: false
-          };
-        }
-        return {
+        return item.id === action.payload.id ? {
+          ...item,
+          ...item,
+          title: action.cache,
+          editing: false
+        } : {
           ...item
         };
       });

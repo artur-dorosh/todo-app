@@ -1,44 +1,60 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Todo} from '../../interfaces/todo';
-import {select, Store} from '@ngrx/store';
-import {from, Observable} from 'rxjs';
-import * as fromRoot from "../../store/reducers";
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import * as fromRoot from '../../store/reducers';
 import {
   AddTodoAction,
-  CancelEditTodoAction, CheckAllTodosAction, ClearCompleted, DeleteTodoAction,
+  CancelEditTodoAction,
+  CheckAllTodosAction,
+  ClearCompleted,
+  DeleteTodoAction,
   DoneEditTodoAction,
-  EditTodoAction
-} from "../../store/actions/todos.action";
+  EditTodoAction, GetDataAction
+} from '../../store/actions/todos.action';
 
 @Component({
   selector: 'todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoListComponent {
+export class TodoListComponent implements OnInit {
   public filter = 'all';
   todoTitle = '';
   public todos$: Observable<Todo[]>;
+  public cache = '';
 
   constructor(private store: Store<fromRoot.State>) {
     this.todos$ = store.select(fromRoot.getTodosState);
   }
 
+  ngOnInit(): void {
+    this.store.dispatch(new GetDataAction());
+  }
+
   addTodo(): void {
+    if (!this.todoTitle) {
+      return;
+    }
     this.store.dispatch(new AddTodoAction(this.todoTitle));
     this.todoTitle = '';
   }
 
   editTodo(todo: Todo): void {
+    this.cache = todo.title;
     this.store.dispatch(new EditTodoAction(todo));
   }
 
   doneEdit(todo: Todo): void {
+    if (!todo.title) {
+      return;
+    }
     this.store.dispatch(new DoneEditTodoAction(todo));
   }
 
   cancelEdit(todo: Todo): void {
-    this.store.dispatch(new CancelEditTodoAction(todo));
+    this.store.dispatch(new CancelEditTodoAction(todo, this.cache));
   }
 
   deleteTodo(id: number): void {
@@ -54,7 +70,7 @@ export class TodoListComponent {
   }
 
   clearCompleted(): void {
-    this.store.dispatch(new ClearCompleted);
+    this.store.dispatch(new ClearCompleted());
   }
 
   checkAllTodos(): void {

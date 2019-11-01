@@ -11,6 +11,8 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {reducers} from "./store/reducers";
+import {EffectsModule} from '@ngrx/effects';
+import {TodosEffects} from './store/effects/todos.effect';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import {reducers} from "./store/reducers";
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([TodosEffects]),
     StoreDevtoolsModule.instrument(),
   ],
   providers: [],

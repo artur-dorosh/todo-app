@@ -14,9 +14,9 @@
     },
     {
       "id": 3,
-      "title": "one more",
+      "editing": false,
       "completed": false,
-      "editing": false
+      "title": "one more"
     },
     {
       "id": 4,
